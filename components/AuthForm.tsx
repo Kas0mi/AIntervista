@@ -55,10 +55,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-row gap-2 justify-center">
           <Image src="/logo.svg" alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">AIntervista</h2>
+          <h2 className="text-primary-100">PrepWise</h2>
         </div>
 
-        <h3>Praktiko intervisten me IA</h3>
+        <h3>Practice job interview with AI</h3>
 
         <Form {...form}>
           <form
@@ -69,39 +69,39 @@ const AuthForm = ({ type }: { type: FormType }) => {
               <FormField
                 control={form.control}
                 name="name"
-                label="Emri"
-                placeholder="Emri juaj"
+                label="Name"
+                placeholder="Your Name"
               />
             )}
             <FormField
               control={form.control}
               name="email"
               label="Email"
-              placeholder="Posta juaj elektronike"
+              placeholder="Your email address"
               type="email"
             />
 
             <FormField
               control={form.control}
               name="password"
-              label="Fjalekalimi"
-              placeholder="Fusni fjalekalimin"
+              label="Password"
+              placeholder="Enter your password"
               type="password"
             />
 
             <Button className="btn" type="submit">
-              {isSignIn ? 'Kycu' : 'Regjistrohu'}
+              {isSignIn ? 'Sign in' : 'Create an Account'}
             </Button>
           </form>
         </Form>
 
         <p className="text-center">
-          {isSignIn ? 'Nuk jeni i regjistruar?' : 'Jeni i regjistruar?'}
+          {isSignIn ? 'No account yet?' : 'Have an account already?'}
           <Link
             href={!isSignIn ? '/sign-in' : '/sign-up'}
             className="font-bold text-user-primary ml-1"
           >
-            {!isSignIn ? 'Kycu' : 'Regjistrohu'}
+            {!isSignIn ? 'Sign in' : 'Sign up'}
           </Link>
         </p>
       </div>
