@@ -1,11 +1,11 @@
 'use client';
 
-import { interviewer } from '@/constants';
-import { cn } from '@/lib/utils';
-import { vapi } from '@/lib/vapi.sdk';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { vapi } from '@/lib/vapi.sdk';
+import { interviewer } from '@/constants';
 
 enum CallStatus {
   INACTIVE = 'INACTIVE',
@@ -34,15 +34,18 @@ const Agent = ({
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+
     const onMessage = (message: Message) => {
       if (message.type === 'transcript' && message.transcriptType === 'final') {
         const newMessage = { role: message.role, content: message.transcript };
+
         setMessages((prev) => [...prev, newMessage]);
       }
     };
 
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
+
     const onError = (error: Error) => console.log('Error', error);
 
     vapi.on('call-start', onCallStart);
@@ -64,11 +67,13 @@ const Agent = ({
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
     console.log('Generate feedback here.');
+
     // TODO: Create a server action that generates feedback
     const { success, id } = {
       success: true,
       id: 'feedback-id',
     };
+
     if (success && id) {
       router.push(`/interview/${interviewId}/feedback`);
     } else {
@@ -105,6 +110,7 @@ const Agent = ({
           .map((question) => `- ${question}`)
           .join('\n');
       }
+
       await vapi.start(interviewer, {
         variableValues: {
           questions: formattedQuestions,
@@ -112,8 +118,10 @@ const Agent = ({
       });
     }
   };
+
   const handleDisconnect = async () => {
     setCallStatus(CallStatus.FINISHED);
+
     vapi.stop();
   };
 
@@ -135,16 +143,17 @@ const Agent = ({
             />
             {isSpeaking && <span className="animate-speak" />}
           </div>
-          <h3>Intervistuesi IA</h3>
+          <h3>AI Interviewer</h3>
         </div>
+
         <div className="card-border">
           <div className="card-content">
             <Image
               src="/user-avatar.png"
-              alt="user-avatar"
+              alt="user avatar"
               width={540}
               height={540}
-              className="rounded-full objext-cover size-[120px]"
+              className="rounded-full object-cover size-[120px]"
             />
             <h3>{userName}</h3>
           </div>
@@ -165,6 +174,7 @@ const Agent = ({
           </div>
         </div>
       )}
+
       <div className="w-full flex justify-center">
         {callStatus !== 'ACTIVE' ? (
           <button className="relative btn-call" onClick={handleCall}>
@@ -174,16 +184,16 @@ const Agent = ({
                 callStatus !== 'CONNECTING' && 'hidden'
               )}
             />
-            <span>{isCallInactiveOrFinished ? 'Thirr' : '. . .'}</span>
+
+            <span>{isCallInactiveOrFinished ? 'Call' : '. . .'}</span>
           </button>
         ) : (
           <button className="btn-disconnect" onClick={handleDisconnect}>
-            Mbylle
+            End
           </button>
         )}
       </div>
     </>
   );
 };
-
 export default Agent;

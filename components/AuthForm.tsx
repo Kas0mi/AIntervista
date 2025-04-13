@@ -44,31 +44,26 @@ const AuthForm = ({ type }: { type: FormType }) => {
       if (type === 'sign-up') {
         const { name, email, password } = values;
 
-        try {
-          const userCredentials = await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
+        const userCredentials = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
 
-          const result = await signUp({
-            uid: userCredentials.user.uid,
-            name: name!,
-            email,
-            password,
-          });
+        const result = await signUp({
+          uid: userCredentials.user.uid,
+          name: name!,
+          email,
+          password,
+        });
 
-          if (!result?.success) {
-            toast.error(result?.message);
-            return;
-          }
-
-          toast.success('Regjistrimi u krye. Ju lutem hyni ne platforme!.');
-          router.push('/sign-in');
-        } catch (firebaseError) {
-          toast.error(`Firebase error: ${firebaseError}`);
+        if (!result?.success) {
+          toast.error(result?.message);
           return;
         }
+
+        toast.success('Account created successfully. Please sign in.');
+        router.push('/sign-in');
       } else {
         const { email, password } = values;
 
@@ -90,7 +85,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           idToken,
         });
 
-        toast.success('U futet me sukses.');
+        toast.success('Sign in successfully.');
         router.push('/');
       }
     } catch (error) {
@@ -106,10 +101,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-row gap-2 justify-center">
           <Image src="/logo.svg" alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">AIntervista</h2>
+          <h2 className="text-primary-100">PrepWise</h2>
         </div>
 
-        <h3>Praktikoni intervisten e punes me IA</h3>
+        <h3>Practice job interview with AI</h3>
 
         <Form {...form}>
           <form
@@ -120,39 +115,39 @@ const AuthForm = ({ type }: { type: FormType }) => {
               <FormField
                 control={form.control}
                 name="name"
-                label="Emri"
-                placeholder="Emri juaj"
+                label="Name"
+                placeholder="Your Name"
               />
             )}
             <FormField
               control={form.control}
               name="email"
               label="Email"
-              placeholder="Posta juaj elektronike"
+              placeholder="Your email address"
               type="email"
             />
 
             <FormField
               control={form.control}
               name="password"
-              label="Fjalekalimi"
-              placeholder="Futni fjalekalimin"
+              label="Password"
+              placeholder="Enter your password"
               type="password"
             />
 
             <Button className="btn" type="submit">
-              {isSignIn ? 'Hyr' : 'Regjistrohu'}
+              {isSignIn ? 'Sign in' : 'Create an Account'}
             </Button>
           </form>
         </Form>
 
         <p className="text-center">
-          {isSignIn ? 'Nuk jeni i regjistruar?' : 'Jeni i regjistruar?'}
+          {isSignIn ? 'No account yet?' : 'Have an account already?'}
           <Link
             href={!isSignIn ? '/sign-in' : '/sign-up'}
             className="font-bold text-user-primary ml-1"
           >
-            {!isSignIn ? 'Hyr' : 'Regjistrohu'}
+            {!isSignIn ? 'Sign in' : 'Sign up'}
           </Link>
         </p>
       </div>
